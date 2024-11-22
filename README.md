@@ -61,8 +61,14 @@ Nous allons sauvegarder un fichier en utilisant le `commit` :
 
 ```bash
 # sauvegarde avec commentaire
-git commit -m"First commit with README.md "
+git commit -m"First commit with README.md"
 ```
+
+#### Voir les `commit`
+
+Permet de voir
+
+	git log
 
 ### Zone de `repository remote`
 
@@ -101,3 +107,92 @@ Nous pourrons ensuite envoyer notre travail sur `origin main` avec :
 	git push
 
 
+## Récupération du reposity
+
+Pour récupérer simplement un repository, on peut utiliser le clonage (la première fois !), dont on est propriétaire (ou un `fork`) :
+
+```bash
+git clone CLEF_SSH (ou https)
+cd nom_du_repertoire
+# pour aller voir le remote créé 
+git remote -v
+
+
+Et nous pouvons travailler en local sur le projet. 
+
+### Récupération de commit
+
+Pour récupérer les nouveaux commit ou commit non présents en local (par exemple travail sur plusieurs machines) : 
+
+```bash
+# recupere le dossier .git (vérification de modification)
+git fetch
+
+# si il y a des changements, récupération du dossier .git 
+# Et des fichiers physiques
+git pull
+
+```
+
+### Retour sur un commit
+
+#### On peut revenir sur un ancien commit, sans perdre les fichiers 
+
+```bash
+# on avait envoyé 4 commits en ligne 
+git push
+
+# retourne sur un ancien commit 
+# ! disparition des commits qui suivent 
+git restore 0901dfac84
+
+# on back 3 commits, 
+# sans modifier les fichiers physiques 
+# en créant un nouveau commit
+git add .
+git commit -m"-3 commits + save files"
+```
+
+Si on effectue un `git push`on aura une erreur car il y a une incompatibilité de la chaîne de commit, 
+une bifurcation.
+
+**seule possibilité : forcer le push : 
+
+	git push --force origin main 
+
+#### On peut revenir sur un ancien commit en remettant les fichiers à l'état de ce commit 
+
+```bash
+# création d'un fichier
+echo "blabla"> f.txt
+git add . 
+git commit  -m"f.txt"
+git push
+
+# création d'un deuxième fichier
+echo "blabla"> f2.txt
+git add . 
+git commit  -m"f2.txt"
+git push
+
+# on avait envoyé 2 commits en ligne 
+git push
+
+# retourne sur un ancien commit 
+# ! disparition des commits qui suivent
+# ! disparition des fichiers ou modifications de ceux-ci 
+git reset --hard 0901dfac84
+
+# on back 3 commits, 
+# sans modifier les fichiers physiques 
+# en créant un nouveau commit
+git add .
+git commit -m"-3 commits + save files"
+```
+
+Si on effectue un `git push`on aura une erreur car il y a une incompatibilité de la chaîne de commit, 
+une bifurcation.
+
+**seule possibilité : forcer le push : 
+
+	git push --force origin main 
